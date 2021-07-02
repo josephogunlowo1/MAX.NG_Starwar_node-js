@@ -1,0 +1,356 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "This is a small set of API endpoints that can be used for listing the names of Star Wars movies, along with their opening crawls and comment counts. Adding and listing anonymous comments for a movie, and getting the character list for a movie",
+    "version": "1.0.0",
+    "title": "Star Wars Node Js API",
+    "contact": {
+      "email": "ogunlowojoseph@gmail.com"
+    }
+  },
+  "host": "",
+  "basePath": "/",
+  "schemes": [
+    "https",
+    "http"
+  ],
+  "paths": {
+    "/films": {
+      "get": {
+        "tags": [
+          "films"
+        ],
+        "description": "Fetches Movies from Swapi endpoint alongside its comment count from database and sorts this movies by their release date",
+        "responses": {
+          "200": {
+            "description": "successfully fetched movie data and comment count",
+            "schema": {
+              "$ref": "#/definitions/films"
+            }
+          }
+        }
+      }
+    },
+    "/comments/add": {
+      "post": {
+        "tags": [
+          "comments"
+        ],
+        "description": "Creates comments for a movie",
+        "parameters": [
+          {
+            "name": "comment",
+            "in": "body",
+            "required": true,
+            "description": "creating a new comment",
+            "schema": {
+              "$ref": "#/definitions/commentRequest"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successfully created a comment",
+            "schema": {
+              "$ref": "#/definitions/postCommentOkResponse"
+            }
+          },
+          "400": {
+            "description": "Bad request sent during comment creation",
+            "schema": {
+              "$ref": "#/definitions/postComment400Response"
+            }
+          }
+        }
+      }
+    },
+    "/comments/{movieId}": {
+      "get": {
+        "tags": [
+          "comments"
+        ],
+        "description": "Fetches Comment for a specific movie",
+        "parameters": [
+          {
+            "name": "movieId",
+            "in": "path",
+            "required": true,
+            "type": "integer",
+            "description": "Movie ID of a comment"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successfully retrieved comments for a movie",
+            "schema": {
+              "$ref": "#/definitions/commentResponseOk"
+            }
+          }
+        }
+      }
+    },
+    "/characters/{movieId}?sortBy={name}&order={asc}&gender={female}": {
+      "get": {
+        "tags": ["characters"],
+        "description": "Fetches All character for a movie based on specified parameters",
+        "parameters": [{
+          "name": "movieId",
+          "in": "path",
+          "required": true,
+          "type": "integer",
+          "description": "Movie ID"
+        },
+        {
+          "name": "sortBy",
+          "in": "query",
+          "type": "string",
+          "required": false,
+          "description": "To sort characters by one of name, gender or height"
+        },
+          {
+            "name": "order",
+            "in": "query",
+            "type": "string",
+            "required": false,
+            "description": "To order characters in ascending or descending order"
+          },
+          {
+            "name": "gender",
+            "in": "query",
+            "type": "string",
+            "required": false,
+            "description": "specifies the filter parameter. male or female"
+          }],
+          "responses": {
+            "200": {
+              "description": "Successfully fetched and manipulated character API from Swapi endpoint",
+              "schema": {
+                "$ref": "#/definitions/characterResponseOk"
+              }
+            }
+          }
+        }
+      }
+  },
+  "definitions": {
+    "characterResponseOk": {
+      "properties": {
+        "status": {
+          "type": "boolean",
+          "example": true
+        },
+        "message": {
+          "type": "string",
+          "example": "characters retrieved"
+        },
+        "data": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "example": "Adi Gallia"
+              },
+              "height": {
+                "type": "string",
+                "example": "184"
+              },
+              "mass": {
+                "type": "string",
+                "example": "50"
+              },
+              "hair_oolor": {
+                "type": "string",
+                "example": "none"
+              },
+              "skin_color": {
+                "type": "string",
+                "example": "dark"
+              },
+              "eye_color": {
+                "type": "string",
+                "example": "blue"
+              },
+              "birth_year": {
+                "type": "string",
+                "example": "unknown"
+              },
+              "gender": {
+                "type": "string",
+                "example": "female"
+              },
+              "homeworld": {
+                "type": "string",
+                "example": "https://swapi.co/api/planets/9/"
+              },
+              "films": {
+                "type": "array",
+                "example": [
+                  "https://swapi.co/api/films/4/",
+                  "https://swapi.co/api/films/6/"
+                ]
+              },
+              "species": {
+                "type": "array",
+                "example": [
+                  "https://swapi.co/api/species/23/"
+                ]
+              },
+              "vehicles": {
+                "type": "array",
+                "example": [
+                ]
+              },
+              "starships": {
+                "type": "array",
+                "example": [
+                ]
+              },
+              "created": {
+                "type": "string",
+                "example": "2014-12-20T10:29:11.661000Z"
+              },
+              "edited": {
+                "type": "string",
+                "example": "2014-12-20T21:17:50.432000Z"
+              },
+              "url": {
+                "type": "string",
+                "example": "https://swapi.co/api/people/55/"
+              }
+            }
+          }
+        }
+      }
+    },
+    "films": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "type": "boolean"
+        },
+        "message": {
+          "type": "string"
+        },
+        "data": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "title": {
+                "type": "string",
+                "example": "A New Hope"
+              },
+              "opening_crawl": {
+                "type": "string",
+                "example": "It is a period of civil war.\\r\\nRebel spaceships, striking\\r\\nfrom a hidden base, have won\\r\\ntheir first victory against\\r\\nthe evil Galactic Empire.\\r\\n\\r\\nDuring the battle, Rebel\\r\\nspies managed to steal secret\\r\\nplans to the Empire's\\r\\nultimate weapon, the DEATH\\r\\nSTAR, an armored space\\r\\nstation with enough power\\r\\nto destroy an entire planet.\\r\\n\\r\\nPursued by the Empire's\\r\\nsinister agents, Princess\\r\\nLeia races home aboard her\\r\\nstarship, custodian of the\\r\\nstolen plans that can save her\\r\\npeople and restore\\r\\nfreedom to the galaxy...."
+              },
+              "release_date": {
+                "type": "string",
+                "example": "1977-05-25"
+              },
+              "comment_count": {
+                "type": "integer",
+                "example": 9
+              }
+            }
+          }
+        }
+      }
+    },
+    "commentResponseOk": {
+      "properties": {
+        "status": {
+          "type": "boolean",
+          "example": true
+        },
+        "message": {
+          "type": "string",
+          "example": "comments retrieved successfully"
+        },
+        "data": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "integer",
+                "example": 2
+              },
+              "movie_id": {
+                "type": "integer",
+                "example": 4
+              },
+              "comment": {
+                "type": "string",
+                "example": "This is a movie comment for the third movie"
+              },
+              "ip_address": {
+                "type": "string",
+                "example": "198.394.932.60"
+              },
+              "createdAt": {
+                "type": "string",
+                "example": "2019-07-19T16:01:39.000Z"
+              },
+              "updatedAt": {
+                "type": "string",
+                "example": "2019-07-19T16:01:39.000Z"
+              }
+            }
+          }
+        }
+      }
+    },
+    "commentRequest": {
+      "type": "object",
+      "properties": {
+        "comment": {
+          "type": "string",
+          "example": "This is a movie comment for the third movie"
+        },
+        "commentable_id": {
+          "type": "integer",
+          "example": 5
+        },
+        "commentable_type": {
+          "type": "string",
+          "example": "Films"
+        }
+      }
+    },
+    "postCommentOkResponse": {
+      "properties": {
+        "status": {
+          "type": "boolean",
+          "example": true
+        },
+        "message": {
+          "type": "string",
+          "example": "comment created successfully"
+        },
+        "data": {
+          "type": "array",
+          "example": null
+        }
+      }
+    },
+    "postComment400Response": {
+      "properties": {
+        "status": {
+          "type": "boolean",
+          "example": false
+        },
+        "message": {
+          "type": "string",
+          "example": "Movie ID is invalid"
+        },
+        "data": {
+          "type": "array",
+          "example": null
+        }
+      }
+    }
+  }
+}
