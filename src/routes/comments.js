@@ -114,8 +114,4 @@ router.get('/:movieId', (req, res) => {
 
 });
 
-
-
-
-
 module.exports = router

@@ -5,23 +5,21 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const swaggerUi = require('swagger-ui-express');
 const openApiDocumentation = require('./api-docs');
-require("dotenv").config({ path: "./config/.env" });
-require('./helpers/init_mongodb')
-//swaggerDocument = require('./')
+require("dotenv").config({ path: "./env" });
+require('./src/helpers/init_mongodb')
+swaggerDocument = require('./')
 
 
 
-const filmRoutes  = require('./routes/films');
-const commentRoutes = require('./routes/comments');
-const characterRoutes = require('./routes/characters');
+const filmRoutes  = require('./src/routes/films');
+const commentRoutes = require('./src/routes/comments');
+const characterRoutes = require('./src/routes/characters');
 
 
 
 app.use(morgan('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-
-
 
 
 
@@ -36,19 +34,16 @@ app.all("*", function (req, res, next) {
     }
 });
 
-
-
 // Routes which should handle requests
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(openApiDocumentation));
 app.use('/films', filmRoutes);
 app.use('/comments', commentRoutes);
 app.use('/characters', characterRoutes);
 
+//listening on port 3000
 app.listen(3000, () => {
      console.log("listening at 3000...")
  });
-
-
 
 
 module.exports = app;

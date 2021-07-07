@@ -1,11 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const characterService = require('../services/character');
-const Film = require("../models/Film");
-const axios = require('axios');
+// const Film = require("/models/Film");
+// const axios = require('axios');
 const _ = require('lodash');
-
-
 
 
 router.get('/:movieId', async(req, res) => {
@@ -20,6 +18,7 @@ router.get('/:movieId', async(req, res) => {
             return res.status(400).json({
                 'status': false,
                 'message': 'sortBy Parameter must be name or gender or height'
+     
             });
 
         }
@@ -74,10 +73,5 @@ router.get('/:movieId', async(req, res) => {
      }
      
 });
-
-
-
-
-
 
 module.exports = router;

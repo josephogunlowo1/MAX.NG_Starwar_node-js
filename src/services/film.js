@@ -1,7 +1,7 @@
 const axios = require('axios');
-var stringify = require('json-stringify-safe');
-const env = require('dotenv').config();
-const _ = require('lodash');
+  stringify = require('json-stringify-safe');
+  require('dotenv').config();
+  require('lodash');
 
 /**
  * fetches all movies
